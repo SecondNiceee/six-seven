@@ -125,6 +125,7 @@ const redesignMockups = [
 
 export default function AppendixPage() {
   const [activeTab, setActiveTab] = useState<"a" | "b" | "c">("b")
+  const [activeChart, setActiveChart] = useState<7 | 8 | 9 | 10>(7)
 
   return (
     <div
@@ -318,8 +319,49 @@ export default function AppendixPage() {
               Приложение B. Графики и диаграммы
             </h2>
 
+            {/* Табы для графиков */}
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                marginBottom: "24px",
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                { id: 7 as const, label: "Рис. 7", subtitle: "Столбчатая" },
+                { id: 8 as const, label: "Рис. 8", subtitle: "Радар" },
+                { id: 9 as const, label: "Рис. 9", subtitle: "Распределение" },
+                { id: 10 as const, label: "Рис. 10", subtitle: "Круговая" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveChart(tab.id)}
+                  style={{
+                    padding: "12px 20px",
+                    backgroundColor: activeChart === tab.id ? "#629924" : "#3d3a37",
+                    color: activeChart === tab.id ? "#fff" : "#bababa",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    minWidth: "100px",
+                  }}
+                >
+                  <span style={{ fontSize: "14px", fontWeight: 700 }}>{tab.label}</span>
+                  <span style={{ fontSize: "11px", opacity: 0.8, marginTop: "2px" }}>
+                    {tab.subtitle}
+                  </span>
+                </button>
+              ))}
+            </div>
+
             <div style={{ display: "grid", gap: "32px" }}>
               {/* Рис. 7 - Столбчатая диаграмма */}
+              {activeChart === 7 && (
               <div
                 style={{
                   backgroundColor: "#262421",
@@ -364,8 +406,10 @@ export default function AppendixPage() {
                   </ResponsiveContainer>
                 </div>
               </div>
+              )}
 
               {/* Рис. 8 - Лепестковая диаграмма */}
+              {activeChart === 8 && (
               <div
                 style={{
                   backgroundColor: "#262421",
@@ -418,16 +462,10 @@ export default function AppendixPage() {
                   </ResponsiveContainer>
                 </div>
               </div>
+              )}
 
-              {/* Рис. 9 и 10 в две колонки */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-                  gap: "24px",
-                }}
-              >
-                {/* Рис. 9 - Распределение оценок */}
+              {/* Рис. 9 - Распределение оценок */}
+              {activeChart === 9 && (
                 <div
                   style={{
                     backgroundColor: "#262421",
@@ -449,7 +487,7 @@ export default function AppendixPage() {
                   <p style={{ fontSize: "13px", color: "#9a9a9a", marginBottom: "24px" }}>
                     Количество критериев в каждом диапазоне оценок
                   </p>
-                  <div style={{ width: "100%", height: 250 }}>
+                  <div style={{ width: "100%", height: 300 }}>
                     <ResponsiveContainer>
                       <BarChart data={distributionData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#3d3a37" />
@@ -471,8 +509,10 @@ export default function AppendixPage() {
                     </ResponsiveContainer>
                   </div>
                 </div>
+              )}
 
-                {/* Рис. 10 - Круговая диаграмма */}
+              {/* Рис. 10 - Круговая диаграмма */}
+              {activeChart === 10 && (
                 <div
                   style={{
                     backgroundColor: "#262421",
@@ -494,15 +534,15 @@ export default function AppendixPage() {
                   <p style={{ fontSize: "13px", color: "#9a9a9a", marginBottom: "24px" }}>
                     Соотношение выполненных требований
                   </p>
-                  <div style={{ width: "100%", height: 250 }}>
+                  <div style={{ width: "100%", height: 300 }}>
                     <ResponsiveContainer>
                       <PieChart>
                         <Pie
                           data={checklistData}
                           cx="50%"
                           cy="50%"
-                          innerRadius={50}
-                          outerRadius={80}
+                          innerRadius={60}
+                          outerRadius={100}
                           paddingAngle={2}
                           dataKey="value"
                           label={({ name, value }) => `${name}: ${value}`}
@@ -523,7 +563,7 @@ export default function AppendixPage() {
                     </ResponsiveContainer>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
